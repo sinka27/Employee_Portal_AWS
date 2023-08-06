@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Portal</title>
+    <!-- Styling for the client UI -->
+    <style>
+    h1 {
+        color: #201f1f;
+        font-family: system-ui;
+        font-size: 30px;
+		margin-left: 20px;
+        }
+	body {
+        background-color: #d8e3ec;
+        }
+    label {
+        color: black;
+        font-family: system-ui;
+        font-size: 20px;
+        margin-left: 20px;
+		margin-top: 20px;
+        }
+     button {
+        background-color: #d6f2b0;
+		border-color: #121212;
+		color: black;
+        font-family: system-ui;
+        font-size: 20px;
+		font-weight: bold;
+        margin-left: 30px;
+		margin-top: 20px;
+		width: 140px;
+        }
+	 /* input {
+        color: #222629;
+        font-family: system-ui;
+        font-size: 20px;
+        margin-left: 10px;
+		margin-top: 20px;
+		width: 100px;
+        } */
+        input{
+            display:block;    
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+    </style>
+    <script>
+        // callAPI function that takes the base and exponent numbers as parameters
+        var callAPI = (id, name, phone, email)=>{
+            // instantiate a headers object
+            var myHeaders = new Headers();
+            // add content type header to object
+            myHeaders.append("Content-Type", "application/json");
+            // using built in JSON utility package turn object to string and store in a variable
+            var raw = JSON.stringify({"id":id,"name":name,"phone":phone,"email":email});
+            // create a JSON object with parameters for API call and store in a variable
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            // make API call with parameters and use promises to get response
+            fetch("https://4p47zsxquc.execute-api.us-west-2.amazonaws.com/dev", requestOptions)
+            .then(response => response.text())
+            .then(result => alert(JSON.parse(result).body))
+            .catch(error => console.log('error', error));
+        }
+        // var getAPI = (id)=>{
+        //     var myHeaders = new Headers();
+        //     // add content type header to object
+        //     myHeaders.append("Content-Type", "application/json");
+        //     // using built in JSON utility package turn object to string and store in a variable
+        //     var raw = JSON.stringify({"ID":id});
+        //     console.log("raw : "+raw);
+        //     // create a JSON object with parameters for API call and store in a variable
+        //     var requestOptions = {
+        //         method: 'POST',
+        //         headers: myHeaders,
+        //         body: raw,
+        //         redirect: 'follow'
+        //     };
+        //     // make API call with parameters and use promises to get response
+        //     fetch("https://p7ozbniihl.execute-api.us-west-2.amazonaws.com/test/get", requestOptions)
+        //     .then(response => response.text())
+        //     .then(result => alert(result))
+        //     .catch(error => console.log('error', error));
+        // }
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Employee Portal!</h1>
+	<form>
+        <label>Employee ID:</label>
+        <input type="text" id="id">
+        <label>Employee Name</label>
+        <input type="text" id="name">
+        <label>Employee Phone Number</label>
+        <input type="text" id="phone">
+        <label>Employee Email</label>
+        <input type="text" id="email">
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <button type="button" onclick="callAPI(document.getElementById('id').value,document.getElementById('name').value,document.getElementById('phone').value,document.getElementById('email').value)">SUBMIT</button>
+        <!-- <label>Item ID:</label>
+        <input type="text" id="itemId">
+        <button type="button" onclick="getAPI(document.getElementById('itemId').value)">GET</button> -->
+    </form>
+</body>
+</html>
